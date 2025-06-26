@@ -15,6 +15,8 @@ addNodeBtn.onclick = () => {
 nodeSelector.querySelectorAll("button").forEach((btn) => {
   btn.addEventListener("click", () => {
     createNode(btn.dataset.type);
+    console.log(btn.dataset.type);
+
     nodeSelector.classList.add("hidden");
   });
 });
@@ -27,7 +29,7 @@ function createNode(label) {
   node.style.left = `${100 + Math.random() * 500}px`;
   node.innerHTML = `
         <div class="font-bold mb-2">${label}</div>
-        <button class="connect-btn bg-blue-600 hover:bg-blue-500 text-sm px-2 py-1 rounded">+</button>
+        <button class="connect-btn absolute  bg-blue-600 hover:bg-blue-500 text-sm px-2 py-1 rounded">+</button>
       `;
   canvas.appendChild(node);
   nodes.push(node);

@@ -1,7 +1,8 @@
 .canvas-bg {
-  background-image: linear-gradient(0deg, #2c2c3a 1px, transparent 1px),
-    linear-gradient(90deg, #2c2c3a 1px, transparent 1px);
+  background-image: radial-gradient(circle, #a5a5a5 0.1px, #0000 1px);
   background-size: 20px 20px;
+  /* background-color: #2d3748; */
+  background-repeat: repeat;
 }
 
 svg {
@@ -15,4 +16,27 @@ svg {
 .node {
   z-index: 10;
   cursor: grab;
+}
+
+.control-btn {
+  backdrop-filter: blur(10px);
+  background: rgba(45, 55, 72, 0.8);
+  border: 1px solid #4a5568;
+  transition: all 0.2s ease;
+}
+
+.control-btn:hover {
+  background: rgba(74, 85, 104, 0.9);
+  transform: translateY(-1px);
+}
+
+.action-btn {
+  background: linear-gradient(135deg, #ed8936, #dd6b20);
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: linear-gradient(135deg, #dd6b20, #c05621);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
 }
