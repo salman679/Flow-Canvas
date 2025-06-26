@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Flow Canvas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="m-0 p-0 overflow-hidden bg-gray-900 text-white">
+    <div id="canvas" class="relative w-screen h-screen canvas-bg">
+      <svg id="connections" width="100%" height="100%"></svg>
+
+      <!-- Add Button -->
+      <button
+        id="addNodeBtn"
+        class="absolute top-4 right-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white z-20"
+      >
+        ➕
+      </button>
+
+      <!-- Sidebar node selector -->
+      <div
+        id="nodeSelector"
+        class="absolute top-16 right-4 bg-gray-800 p-4 rounded shadow-lg space-y-2 hidden z-20"
+      >
+        <button
+          data-type="Edit Fields"
+          class="block w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded"
+        >
+          🖋 Edit Fields
+        </button>
+        <button
+          data-type="AI Agent"
+          class="block w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded"
+        >
+          🤖 AI Agent
+        </button>
+        <button
+          data-type="Switch"
+          class="block w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded"
+        >
+          🔀 Switch
+        </button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
