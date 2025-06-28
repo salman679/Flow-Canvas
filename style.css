@@ -1,8 +1,16 @@
 .canvas-bg {
-  background-image: radial-gradient(circle, #a5a5a5 0.1px, #0000 1px);
+  background-image: radial-gradient(circle, #a5a5a5 0.1px, #2d2e2e 1px);
   background-size: 20px 20px;
-  /* background-color: #2d3748; */
   background-repeat: repeat;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 svg {
@@ -20,14 +28,8 @@ svg {
 
 .control-btn {
   backdrop-filter: blur(10px);
-  background: rgba(45, 55, 72, 0.8);
   border: 1px solid #4a5568;
   transition: all 0.2s ease;
-}
-
-.control-btn:hover {
-  background: rgba(74, 85, 104, 0.9);
-  transform: translateY(-1px);
 }
 
 .action-btn {
@@ -39,4 +41,56 @@ svg {
   background: linear-gradient(135deg, #dd6b20, #c05621);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+}
+
+.sidebar-scroll {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: #4a5568;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #718096;
+  border-radius: 2px;
+}
+
+.node-option {
+  transition: all 0.2s ease;
+  border: none;
+  background: transparent;
+}
+
+.node-option:hover {
+  background: rgba(74, 85, 104, 0.3);
+}
+
+.port {
+  width: 10px;
+  height: 10px;
+  background-color: #d1d5db;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.port-left {
+  left: -6px;
+}
+.port-right {
+  right: -6px;
+}
+
+/* Plus button */
+.outside-plus {
+  position: absolute;
+  right: -18px;
+  top: 50%;
+  transform: translateY(-50%);
 }

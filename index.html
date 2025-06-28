@@ -5,107 +5,386 @@
     <title>Flow Canvas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css" />
+
+    <!-- font  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      .poppins-thin {
+        font-family: "Poppins", sans-serif;
+      }
+    </style>
   </head>
-  <body class="m-0 p-0 overflow-hidden bg-gray-900 text-white">
-    <div id="canvas" class="relative w-screen h-screen canvas-bg">
-      <svg id="connections" width="100%" height="100%"></svg>
-
-      <!-- Control Buttons (Bottom Left) -->
-      <div class="absolute bottom-6 left-6 flex space-x-2 z-20">
-        <button id="fullscreenBtn" class="control-btn p-3 rounded-lg">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
-            />
-          </svg>
-        </button>
-        <button id="zoomInBtn" class="control-btn p-3 rounded-lg">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" />
-            <line x1="11" y1="8" x2="11" y2="14" />
-            <line x1="8" y1="11" x2="14" y2="11" />
-          </svg>
-        </button>
-        <button id="zoomOutBtn" class="control-btn p-3 rounded-lg">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" />
-            <line x1="8" y1="11" x2="14" y2="11" />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Action Buttons (Bottom Center) -->
+  <body class="m-0 p-0 overflow-hidden bg-gray-900 text-white poppins-thin">
+    <div
+      id="scrollContainer"
+      class="w-screen h-screen overflow-scroll relative hide-scrollbar"
+    >
       <div
-        class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-4 z-20"
+        id="canvas"
+        class="absolute canvas-bg"
+        style="width: 2000px; height: 2000px"
       >
-        <button
-          id="testWorkflowBtn"
-          class="action-btn px-6 py-3 rounded-lg font-semibold"
-        >
-          Test Workflow
-        </button>
-        <button
-          id="domToJsonBtn"
-          class="action-btn px-6 py-3 rounded-lg font-semibold"
-        >
-          DOM to JSON
-        </button>
-      </div>
+        <svg id="connections" width="100%" height="100%"></svg>
 
-      <!-- Add Button -->
-      <button
-        id="addNodeBtn"
-        class="absolute top-4 right-4 border border-white px-4 py-2 rounded text-white z-20"
-      >
-        ➕
-      </button>
+        <div class="fixed bottom-0 left-0 right-0">
+          <!-- Control Buttons (Bottom Left) -->
+          <div class="absolute bottom-6 left-6 flex space-x-2 z-20">
+            <button
+              id="fullscreenBtn"
+              class="control-btn p-4 flex items-center justify-center rounded"
+            >
+              <div>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+                  />
+                </svg>
+              </div>
+            </button>
+            <button id="zoomInBtn" class="control-btn p-3 rounded-lg">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+                <line x1="11" y1="8" x2="11" y2="14" />
+                <line x1="8" y1="11" x2="14" y2="11" />
+              </svg>
+            </button>
+            <button id="zoomOutBtn" class="control-btn p-3 rounded-lg">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+                <line x1="8" y1="11" x2="14" y2="11" />
+              </svg>
+            </button>
+          </div>
 
-      <!-- Sidebar node selector -->
-      <div
-        id="nodeSelector"
-        class="absolute top-16 right-4 bg-gray-800 p-4 rounded shadow-lg space-y-2 hidden z-20"
-      >
-        <button
-          data-type="Edit Fields"
-          class="block w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded"
+          <!-- Action Buttons (Bottom Center) -->
+          <div
+            class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-4 z-20"
+          >
+            <button
+              id="testWorkflowBtn"
+              class="action-btn px-6 py-3 rounded-lg font-semibold"
+            >
+              Test Workflow
+            </button>
+            <button
+              id="domToJsonBtn"
+              class="action-btn px-6 py-3 rounded-lg font-semibold"
+            >
+              DOM to JSON
+            </button>
+          </div>
+        </div>
+
+        <div class="fixed top-4 right-4">
+          <!-- Add Button -->
+          <button
+            id="addNodeBtn"
+            class="absolute right-4 border border-white px-4 py-2 rounded text-white z-20"
+          >
+            ➕
+          </button>
+        </div>
+
+        <!-- Sidebar node selector -->
+        <div
+          id="nodeSelector"
+          class="fixed top-0 right-0 bg-[#525456] h-full w-[400px] rounded shadow-lg space-y-2 hidden z-20"
         >
-          🖋 Edit Fields
-        </button>
+          <h4 class="px-4 pt-4 pb-2 text-2xl font-semibold">
+            What happens next?
+          </h4>
+
+          <div class="bg-[#414244] space-y-2 h-full">
+            <div class="border-1 border-white relative px-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="white"
+                x="0px"
+                y="0px"
+                width="20"
+                height="20"
+                viewBox="0 0 50 50"
+                class="absolute left-6 top-1/2 transform -translate-y-1/2"
+              >
+                <path
+                  d="M 21 4 C 11.082241 4 3 12.082241 3 22 C 3 31.917759 11.082241 40 21 40 C 24.62177 40 27.99231 38.91393 30.820312 37.0625 L 43.378906 49.621094 L 47.621094 45.378906 L 35.224609 32.982422 C 37.581469 29.938384 39 26.13473 39 22 C 39 12.082241 30.917759 4 21 4 z M 21 8 C 28.756241 8 35 14.243759 35 22 C 35 29.756241 28.756241 36 21 36 C 13.243759 36 7 29.756241 7 22 C 7 14.243759 13.243759 8 21 8 z"
+                ></path>
+              </svg>
+              <input
+                type="search"
+                id="searchNodes"
+                placeholder="Search nodes..."
+                class="w-full pl-10 pr-4 py-2.5 bg-[#414244] border border-gray-400 rounded-md text-white text-lg placeholder-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-400 my-4"
+              />
+            </div>
+
+            <div>
+              <button
+                data-type="On Chat Message"
+                class="flex items-center justify-center w-full border-l-4 border-transparent hover:border-white px-6 py-2 mb-2 relative"
+              >
+                <svg
+                  fill="currentColor"
+                  stroke-width="0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 1024 1024"
+                  height="36"
+                  width="36"
+                  class="absolute left-5 top-1/2 transform -translate-y-1/2"
+                  style="color: #c3c9d5"
+                >
+                  <path
+                    d="M690.1 377.4c5.9 0 11.8.2 17.6.5-24.4-128.7-158.3-227.1-319.9-227.1C209 150.8 64 271.4 64 420.2c0 81.1 43.6 154.2 111.9 203.6a21.5 21.5 0 0 1 9.1 17.6c0 2.4-.5 4.6-1.1 6.9-5.5 20.3-14.2 52.8-14.6 54.3-.7 2.6-1.7 5.2-1.7 7.9 0 5.9 4.8 10.8 10.8 10.8 2.3 0 4.2-.9 6.2-2l70.9-40.9c5.3-3.1 11-5 17.2-5 3.2 0 6.4.5 9.5 1.4 33.1 9.5 68.8 14.8 105.7 14.8 6 0 11.9-.1 17.8-.4-7.1-21-10.9-43.1-10.9-66 0-135.8 132.2-245.8 295.3-245.8zm-194.3-86.5c23.8 0 43.2 19.3 43.2 43.1s-19.3 43.1-43.2 43.1c-23.8 0-43.2-19.3-43.2-43.1s19.4-43.1 43.2-43.1zm-215.9 86.2c-23.8 0-43.2-19.3-43.2-43.1s19.3-43.1 43.2-43.1 43.2 19.3 43.2 43.1-19.4 43.1-43.2 43.1zm586.8 415.6c56.9-41.2 93.2-102 93.2-169.7 0-124-120.8-224.5-269.9-224.5-149 0-269.9 100.5-269.9 224.5S540.9 847.5 690 847.5c30.8 0 60.6-4.4 88.1-12.3 2.6-.8 5.2-1.2 7.9-1.2 5.2 0 9.9 1.6 14.3 4.1l59.1 34c1.7 1 3.3 1.7 5.2 1.7a9 9 0 0 0 6.4-2.6 9 9 0 0 0 2.6-6.4c0-2.2-.9-4.4-1.4-6.6-.3-1.2-7.6-28.3-12.2-45.3-.5-1.9-.9-3.8-.9-5.7.1-5.9 3.1-11.2 7.6-14.5zM600.2 587.2c-19.9 0-36-16.1-36-35.9 0-19.8 16.1-35.9 36-35.9s36 16.1 36 35.9c0 19.8-16.2 35.9-36 35.9zm179.9 0c-19.9 0-36-16.1-36-35.9 0-19.8 16.1-35.9 36-35.9s36 16.1 36 35.9a36.08 36.08 0 0 1-36 35.9z"
+                  ></path>
+                </svg>
+                <div class="pl-16 text-left">
+                  <h3 class="font-semibold text-white text-xl">
+                    On Chat Message
+                  </h3>
+                  <p
+                    class="text-base text-gray-300 leading-tight mt-1 text-[#C0C5D1]"
+                  >
+                    Runs the flow when a user send a chat message. For use with
+                    AI nodes.
+                  </p>
+                </div>
+              </button>
+              <button
+                data-type="Switch"
+                class="flex items-center justify-center w-full border-l-4 border-transparent hover:border-white px-6 py-2 mb-2 relative"
+              >
+                <svg
+                  fill="currentColor"
+                  stroke-width="0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  height="36"
+                  width="36"
+                  class="absolute left-5 top-1/2 transform -translate-y-1/2"
+                  style="color: #58abff"
+                >
+                  <path
+                    d="M19 11h-6V8h6a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H5L2 5l3 3h6v3H5a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h6v5h2v-5h6l3-3-3-3z"
+                  ></path>
+                </svg>
+                <div class="pl-16 text-left">
+                  <h3 class="font-semibold text-white text-xl">Switch</h3>
+                  <p
+                    class="text-base text-gray-300 leading-tight mt-1 text-[#C0C5D1]"
+                  >
+                    Routes items depending on defined expression or rules
+                  </p>
+                </div>
+              </button>
+              <button
+                data-type="Edit Fields"
+                class="flex items-center justify-center w-full border-l-4 border-transparent hover:border-white px-6 py-2 mb-2 relative"
+              >
+                <svg
+                  fill="currentColor"
+                  stroke-width="0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  height="36"
+                  width="36"
+                  class="absolute left-5 top-1/2 transform -translate-y-1/2"
+                  style="color: #898fff"
+                >
+                  <path
+                    d="m362.7 19.3-48.4 48.4 130 130 48.4-48.4c25-25 25-65.5 0-90.5l-39.4-39.5c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2c-2.5 8.5-.2 17.6 6 23.8s15.3 8.5 23.7 6.1L151 475.7c14.1-4.2 27-11.8 37.4-22.2l233.3-233.2-130-130z"
+                  ></path>
+                </svg>
+                <div class="pl-14 text-left">
+                  <h3 class="font-semibold text-white text-xl">Edit</h3>
+                  <p
+                    class="text-base text-gray-300 leading-tight mt-1 text-[#C0C5D1]"
+                  >
+                    Modify, Add or Remove item fields.
+                  </p>
+                </div>
+              </button>
+              <button
+                data-type="Edit Fields"
+                class="flex items-center justify-center w-full border-l-4 border-transparent hover:border-white px-6 py-2 mb-2 relative"
+              >
+                <svg
+                  fill="currentColor"
+                  stroke-width="0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  height="36"
+                  width="36"
+                  class="absolute left-5 top-1/2 transform -translate-y-1/2"
+                  style="color: #58abff"
+                >
+                  <path
+                    d="M3.9 54.9C10.5 40.9 24.5 32 40 32h432c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6v-79.1L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"
+                  ></path>
+                </svg>
+                <div class="text-left">
+                  <h3 class="font-semibold text-white text-xl">Filter</h3>
+                  <p
+                    class="text-base text-gray-300 leading-tight mt-1 text-[#C0C5D1]"
+                  >
+                    Remove items from the flow
+                  </p>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="sidebar-scroll space-y-0" id="nodeSelector">
         <button
-          data-type="AI Agent"
-          class="block w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded"
+          data-type="On Chat Message"
+          class="node-option w-full p-3 text-left flex items-center space-x-3 rounded-md"
         >
-          🤖 AI Agent
+          <div class="w-6 h-6 flex items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#9ca3af">
+              <path
+                d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"
+              />
+            </svg>
+          </div>
+          <div>
+            <div class="font-medium text-white text-sm">On Chat Message</div>
+            <div class="text-xs text-gray-300 leading-tight">
+              Runs the flow when a user send a chat message. For use with AI
+              nodes.
+            </div>
+          </div>
         </button>
+
         <button
           data-type="Switch"
-          class="block w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded"
+          class="node-option w-full p-3 text-left flex items-center space-x-3 rounded-md"
         >
-          🔀 Switch
+          <div class="w-6 h-6 flex items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#60a5fa">
+              <rect x="6" y="4" width="4" height="16" rx="2" />
+              <rect x="14" y="4" width="4" height="16" rx="2" />
+              <rect x="2" y="8" width="20" height="2" rx="1" />
+              <rect x="2" y="14" width="20" height="2" rx="1" />
+            </svg>
+          </div>
+          <div>
+            <div class="font-medium text-white text-sm">Switch</div>
+            <div class="text-xs text-gray-300 leading-tight">
+              Routes items depending on defined expression or rules
+            </div>
+          </div>
         </button>
+
+        <button
+          data-type="Edit Fields"
+          class="node-option w-full p-3 text-left flex items-center space-x-3 rounded-md"
+        >
+          <div class="w-6 h-6 flex items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#a78bfa">
+              <path
+                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+              />
+              <path
+                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+              />
+            </svg>
+          </div>
+          <div>
+            <div class="font-medium text-white text-sm">Edit</div>
+            <div class="text-xs text-gray-300 leading-tight">
+              Modify, Add or Remove item fields.
+            </div>
+          </div>
+        </button>
+
+        <button
+          data-type="Filter"
+          class="node-option w-full p-3 text-left flex items-center space-x-3 rounded-md"
+        >
+          <div class="w-6 h-6 flex items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#60a5fa">
+              <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46" />
+            </svg>
+          </div>
+          <div>
+            <div class="font-medium text-white text-sm">Filter</div>
+            <div class="text-xs text-gray-300 leading-tight">
+              Remove items matching a condition.
+            </div>
+          </div>
+        </button>
+
+        <button
+          data-type="AI Agent"
+          class="node-option w-full p-3 text-left flex items-center space-x-3 rounded-md"
+        >
+          <div class="w-6 h-6 flex items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#9ca3af">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="M21 15.5c-.5-1.5-2-2.5-4-2.5s-3.5 1-4 2.5" />
+            </svg>
+          </div>
+          <div>
+            <div class="font-medium text-white text-sm">AI Agent</div>
+            <div class="text-xs text-gray-300 leading-tight">
+              Runs the flow when a user send a chat message. For use with AI
+              nodes.
+            </div>
+          </div>
+        </button>
+
+        <button
+          data-type="Customer Support Agent"
+          class="node-option w-full p-3 text-left flex items-center space-x-3 rounded-md"
+        >
+          <div class="w-6 h-6 flex items-center justify-center">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#9ca3af">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="M21 15.5c-.5-1.5-2-2.5-4-2.5s-3.5 1-4 2.5" />
+            </svg>
+          </div>
+          <div>
+            <div class="font-medium text-white text-sm">
+              Customer Support Agent
+            </div>
+            <div class="text-xs text-gray-300 leading-tight">
+              Runs the flow when a user send a chat message. For use with AI
+              nodes.
+            </div>
+          </div>
+        </button>
+      </div> -->
       </div>
     </div>
 
